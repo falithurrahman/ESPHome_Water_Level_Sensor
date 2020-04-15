@@ -2,10 +2,23 @@ esphome:
   name: test_serial
   platform: ESP8266
   board: d1_mini
+  # includes:
+  #   - my_custom_component.h
+
+# uart:
+#   id: uart_bus
+#   tx_pin: GPIO1
+#   rx_pin: GPIO3
+#   baud_rate: 9600
+
+# custom_component:
+# - lambda: |-
+#     auto my_custom = new MyCustomComponent(id(uart_bus));
+#     return {my_custom};
 
 wifi:
-  ssid: "ssid_name"
-  password: "ssid_password"
+  ssid: "ssid"
+  password: "password"
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
@@ -16,6 +29,8 @@ captive_portal:
 
 # Enable logging
 logger:
+  # baud_rate: 0
+  # hardware_uart: UART1
 
 # Enable Home Assistant API
 api:
@@ -29,16 +44,16 @@ sensor:
     update_interval: 2s
     icon: "mdi:water-percent"
     accuracy_decimals: 1
-    unit_of_measurement: "meter"
     filters:
-      - multiply: 3.3
+      - multiply: 100
       # - sliding_window_moving_average:
       #     window_size: 15
       #     send_every: 10
-      # # - calibrate_linear:
-      #   # Map 0.0 (from sensor) to 0.0 (true value)
-      #   - 0.0 -> 0.89268 
-      #   - 10.0 -> 1.05381 
+      - calibrate_linear:
+        # Map 0.0 (from sensor) to 0.0 (true value)
+        - 74 -> 0
+        - 86 -> 50
+        - 99 -> 100
       # - calibrate_polynomial:
       #     degree: 5
       #     datapoints:
@@ -50,3 +65,22 @@ sensor:
       #     - 8.0 -> 1.41475 
       #     - 10.0 -> 1.57910
       # - lambda: return (x/1.26)*100;
+    unit_of_measurement: "%"
+    
+switch:
+  - platform: gpio
+    name: "Kendali Pompa Air"
+    id: kendali_pompa_air
+    pin:
+      number: GPIO15
+      inverted: True
+    on_turn_on:
+      then:
+        - switch.turn_on: tanda_pompa_air
+    on_turn_off:
+        - switch.turn_off: tanda_pompa_air
+  - platform: gpio
+    name: "Tanda Pompa Air"
+    id: tanda_pompa_air
+    pin: GPIO13
+    inverted: True
