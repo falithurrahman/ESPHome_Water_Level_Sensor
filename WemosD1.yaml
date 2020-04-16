@@ -38,34 +38,13 @@ api:
 ota:
 
 sensor:
-  - platform: adc
-    pin: A0
-    name: "Water Level"
-    update_interval: 2s
-    icon: "mdi:water-percent"
-    accuracy_decimals: 1
-    filters:
-      - multiply: 100
-      # - sliding_window_moving_average:
-      #     window_size: 15
-      #     send_every: 10
-      - calibrate_linear:
-        # Map 0.0 (from sensor) to 0.0 (true value)
-        - 74 -> 0
-        - 86 -> 50
-        - 99 -> 100
-      # - calibrate_polynomial:
-      #     degree: 5
-      #     datapoints:
-      #   # Map 0.0 (from sensor) to 0.0 (true value)
-      #     - 0.0 -> 1.26006 
-      #     - 2.0 -> 1.26650 
-      #     - 4.0 -> 1.31484
-      #     - 6.0 -> 1.32129 
-      #     - 8.0 -> 1.41475 
-      #     - 10.0 -> 1.57910
-      # - lambda: return (x/1.26)*100;
-    unit_of_measurement: "%"
+  - platform: ultrasonic
+    trigger_pin: GPIO5
+    echo_pin: GPIO4
+    name: "Ultrasonic Sensor"
+    unit_of_measurement: "meter"
+    update_interval: 5s
+    timeout: 2m
     
 switch:
   - platform: gpio
