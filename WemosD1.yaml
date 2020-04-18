@@ -1,20 +1,7 @@
 esphome:
-  name: test_serial
+  name: PompaAir_Control
   platform: ESP8266
   board: d1_mini
-  # includes:
-  #   - my_custom_component.h
-
-# uart:
-#   id: uart_bus
-#   tx_pin: GPIO1
-#   rx_pin: GPIO3
-#   baud_rate: 9600
-
-# custom_component:
-# - lambda: |-
-#     auto my_custom = new MyCustomComponent(id(uart_bus));
-#     return {my_custom};
 
 wifi:
   ssid: "ssid"
@@ -29,8 +16,6 @@ captive_portal:
 
 # Enable logging
 logger:
-  # baud_rate: 0
-  # hardware_uart: UART1
 
 # Enable Home Assistant API
 api:
@@ -44,7 +29,7 @@ sensor:
     name: "Ultrasonic Sensor"
     unit_of_measurement: "meter"
     update_interval: 5s
-    timeout: 2m
+    timeout: 4m
     
 switch:
   - platform: gpio
@@ -53,13 +38,3 @@ switch:
     pin:
       number: GPIO15
       inverted: True
-    on_turn_on:
-      then:
-        - switch.turn_on: tanda_pompa_air
-    on_turn_off:
-        - switch.turn_off: tanda_pompa_air
-  - platform: gpio
-    name: "Tanda Pompa Air"
-    id: tanda_pompa_air
-    pin: GPIO13
-    inverted: True
