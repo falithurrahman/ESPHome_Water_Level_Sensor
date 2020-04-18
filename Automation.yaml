@@ -47,3 +47,73 @@
   - data: {}
     entity_id: switch.kendali_pompa_air
     service: switch.turn_off
+- id: '1586239731542'
+  alias: PompaAir_TurnOn
+  description: ''
+  trigger:
+  - device_id: 838eb827eb444a7982e5efcdea664e25
+    domain: binary_sensor
+    entity_id: binary_sensor.saklar_pompa_air
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+    platform: device
+    type: turned_on
+  condition:
+  - condition: device
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: switch
+    entity_id: switch.kendali_pompa_air
+    type: is_off
+  action:
+  - data: {}
+    entity_id: switch.kendali_pompa_air
+    service: switch.turn_on
+  - data: {}
+    entity_id: light.lampu_pompa_air
+    service: light.turn_on
+  - data:
+      entity_id: media_player.mpd
+      volume_level: 0.01
+    entity_id: media_player.mpd
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.mpd
+      message: Pompa Hidup
+    service: tts.google_translate_say
+- id: '1586243912961'
+  alias: PompaAir_TurnOff
+  description: ''
+  trigger:
+  - device_id: 838eb827eb444a7982e5efcdea664e25
+    domain: binary_sensor
+    entity_id: binary_sensor.saklar_pompa_air
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+    platform: device
+    type: turned_on
+  condition:
+  - condition: device
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: switch
+    entity_id: switch.kendali_pompa_air
+    type: is_on
+  action:
+  - data: {}
+    entity_id: switch.kendali_pompa_air
+    service: switch.turn_off
+  - data: {}
+    entity_id: light.lampu_pompa_air
+    service: light.turn_off
+  - data:
+      entity_id: media_player.mpd
+      volume_level: 0.01
+    entity_id: media_player.mpd
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.mpd
+      message: Pompa Mati
+    service: tts.google_translate_say
