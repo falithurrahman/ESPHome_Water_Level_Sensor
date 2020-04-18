@@ -1,0 +1,49 @@
+- id: '1586974361971'
+  alias: PompaAir_TurnOn_Auto
+  description: ''
+  trigger:
+  - above: 0
+    below: 0.2
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: sensor
+    entity_id: sensor.ultrasonic_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    platform: device
+    type: value
+  condition:
+  - condition: device
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: switch
+    entity_id: switch.kendali_pompa_air
+    type: is_off
+  action:
+  - data: {}
+    entity_id: switch.kendali_pompa_air
+    service: switch.turn_on
+- id: '1587213982073'
+  alias: PompaAir_TurnOff_Auto
+  description: ''
+  trigger:
+  - above: 0.8
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: sensor
+    entity_id: sensor.ultrasonic_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    platform: device
+    type: value
+  condition:
+  - condition: device
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: switch
+    entity_id: switch.kendali_pompa_air
+    type: is_on
+  action:
+  - data: {}
+    entity_id: switch.kendali_pompa_air
+    service: switch.turn_off
