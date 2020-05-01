@@ -4,7 +4,8 @@ In this repository, i share my project on making water level sensor integrated w
 #### Tools and Equipment
   - Wemos D1 Mini
   - DC 5V Power Supply
-  - Relay Optocoupler 
+  - Relay Optocoupler <br>
+    This relay will be connected to water pump so that we will be able to autonomously turn the pump on and off. 
   - Ultrasonic Distance Sensor <br>
     There are various kind of this sensor like SRF04, HC-SR04, US-100. You can use any kind of sensor of your desire. They all are working on same principle.
 
@@ -50,4 +51,41 @@ switch:
       inverted: True
 ````
 
-In filters, i inverse the distance eesult from sensor. It's because i place ultrasonic distance sensor on the top of my water tank, facomg down the water tank. As the water rise, the tank will be full. But the ultrasonic distance sensor reading will get shorter. Then, i inverse sensor reading so that as the water rise, it'll also tell us that the tank is getting full.
+In filters, i inverse the distance result from sensor. It's because i place ultrasonic distance sensor on the top of my water tank, facing down the water tank. As the water rise, the tank will be full. But the ultrasonic distance sensor reading will get shorter. Then, i inverse sensor reading so that as the water rise, it'll also tell us that the tank is getting full.
+
+#### Automation
+The idea of using home assistant is because i want to add automation in this project. By using automation, i can have the water pump to turn on and off, filling water tank autonomously. The trigger of this automation is based on ultrasonic sensor reading. You can peek the automation code in this repository with automation.yaml filename. 
+
+````yaml
+  alias: PompaAir_TurnOn_Auto
+  description: ''
+  trigger:
+  - above: 0
+    below: 0.2
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: sensor
+    entity_id: sensor.ultrasonic_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    platform: device
+    type: value
+````
+As you can see part of the automation.yaml i copy, trigger to turn on the water pump is the inverted result from ultrasonic distance reading. If the value shows between 0 to 0.2 meters, it will turn on water pump.
+````yaml
+  alias: PompaAir_TurnOff_Auto
+  description: ''
+  trigger:
+  - above: 0.8
+    device_id: 1c657803e15f46eebff68046b731fd01
+    domain: sensor
+    entity_id: sensor.ultrasonic_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    platform: device
+    type: value
+````
+But if the value shows between 0.8 meter, it will turn on water pump. Why not use 1 meter? Because the height of my water tank is 1m. If the pump stop by 1m, it will make the sensor sink and i don't want it happen.
