@@ -24,12 +24,14 @@ ota:
 
 sensor:
   - platform: ultrasonic
-    trigger_pin: GPIO5
-    echo_pin: GPIO4
+    trigger_pin: GPIO0
+    echo_pin: GPIO2
     name: "Ultrasonic Sensor"
+    update_interval: 10s
+    timeout: 4.0m
+    filters:
+    - lambda: return (1-x);
     unit_of_measurement: "meter"
-    update_interval: 5s
-    timeout: 4m
     
 switch:
   - platform: gpio
