@@ -50,3 +50,4 @@ switch:
       inverted: True
 ````
 
+In filters, i inverse the distance eesult from sensor. It's because i place ultrasonic distance sensor on the top of my water tank, facomg down the water tank. As the water rise, the tank will be full. But the ultrasonic distance sensor reading will get shorter. Then, i inverse sensor reading so that as the water rise, it'll also tell us that the tank is getting full.
