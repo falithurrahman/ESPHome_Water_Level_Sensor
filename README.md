@@ -25,3 +25,28 @@ Here is the wiring diagram between WemosD1 Mini and Ultrasonic Distance Sensor. 
 |D4|Echo|
 
 I have provided you the schematic and board file inside control board folder. The filename is WemosD1_Control. It will ease you to understand wiring diagram of the circuit.
+
+#### Code
+Since i use ESPHome firmware running on my Wemos D1 Mini, i write the code in yaml file. You can peek the code in this repository with WemosD1.yaml filename. The main part of the code is within the sensor and switch part. For pin mapping, we can use whether with D8, D3, D4 syntax or GPIO2, GPIO0, GPIO15 syntax. Both of them work fine.
+
+````yaml
+sensor:
+  - platform: ultrasonic
+    trigger_pin: GPIO0
+    echo_pin: GPIO2
+    name: "Ultrasonic Sensor"
+    update_interval: 10s
+    timeout: 4.0m
+    filters:
+    - lambda: return (1-x);
+    unit_of_measurement: "meter"
+    
+switch:
+  - platform: gpio
+    name: "Kendali Pompa Air"
+    id: kendali_pompa_air
+    pin:
+      number: GPIO15
+      inverted: True
+````
+
